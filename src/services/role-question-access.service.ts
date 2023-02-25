@@ -1,32 +1,42 @@
-import { CreateRoleQuestionAccessDto, UpdateRoleQuestionAccessDto } from './../dtos/role-question-access.dtos';
+import { ConfigService } from '@nestjs/config';
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { DB } from '../../util/db-conection'
+import { Sequelize } from 'sequelize';
+
+import { CreateRoleQuestionAccessDto, UpdateRoleQuestionAccessDto } from '../dtos/role-question-access.dtos';
 import { RoleQuestionAccess } from 'src/entities/role-question-access.entity';
 
 @Injectable()
-export class RolQuestionAccessService {
-    private counterId = 1;
-    private array_access:RoleQuestionAccess[] = [{
-        id:1,
-        id_role:1,
-        id_question:1,
-        visible:'visible',
-        editable:'editable',
-        require:'require',
-    }];
+export class RoleQuestionAccessService {
+    private array_access:RoleQuestionAccess[] = [];
+    db:Sequelize;
 
-    findAll(){
+    constructor(private configService:ConfigService){
+        try {
+            const instan_db = new DB(this.configService);
+            this.db = instan_db.connect();
+            this.db.authenticate();
+          } catch (error) {
+            throw new Error(error);
+          }
+    }
+
+    async getAllData(){
+        this.array_access = [];
+        (await this.db.query('SELECT * FROM tbl_role_question_access'))[0].forEach( (row:RoleQuestionAccess) => {
+            this.array_access.push(row);
+        });
         return this.array_access;
     }
 
     findOne(id:number){
-        const user = this.array_access.find(item => item.id === id);
-        if(!user){ 
+        const question = this.array_access.find(item => item.id === id);
+        if(!question){ 
             throw new NotFoundException(`user with id ${id} not found`);
         }
-        return user;
+        return question;
     }
     
-
     // create(payload:CreateRoleQuestionAccessDto){
     //     console.log(payload)
     //     this.counterId++;

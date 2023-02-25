@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { RolQuestionAccessService } from './services/rol-question-access.service';
-import { RolQuestionAccessController } from './controllers/rol-question-access.controller';
+import { RoleQuestionAccessService } from './services/role-question-access.service';
+import { RoleQuestionAccessController } from './controllers/role-question-access.controller';
 import { ConfigModule } from '@nestjs/config';
 import { configuration } from '../config/configuration'; // this is new
 
@@ -17,11 +17,11 @@ import { configuration } from '../config/configuration'; // this is new
   ],
   controllers: [
     AppController,
-    RolQuestionAccessController
+    RoleQuestionAccessController
   ],
   providers: [
     AppService,
-    RolQuestionAccessService,
+    RoleQuestionAccessService,
   ],
 })
 export class AppModule {}
