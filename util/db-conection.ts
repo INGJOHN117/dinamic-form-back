@@ -19,6 +19,8 @@ export class Conection {
                 host:this.configService.get<string>("DATABASE_URL"),
                 port:this.configService.get<number>("DATABASE_PORT"),
                 dialect:'postgres',
+
+                //asdadasdasda
             }
         )
 
